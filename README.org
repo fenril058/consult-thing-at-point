@@ -5,7 +5,7 @@ consult commands with the “thing” at point as INITIAL input.
 It allows commands such as ~consult-line~ or ~consult-ripgrep~ to start with
 a symbol, word, or active region near point automatically filled in.
 
-The package, inspired by the ~isearch-forward-thing-at-point~ command
+The package is inspired by the ~isearch-forward-thing-at-point~ command
 defined in ~isearch.el~.
 
 ** Features
