@@ -1,13 +1,12 @@
-#+title: consult-things-at-point
-#+author: ril
-#+language: en
-
 * consult-things-at-point
-~consult-things-at-point~ is a small extension for Consult which seeds Consult
-commands with the “thing” at point as INITIAL input.
+~consult-things-at-point~ is a small extension for [[https://github.com/minad/consult][consult]] which seeds
+consult commands with the “thing” at point as INITIAL input.
 
 It allows commands such as ~consult-line~ or ~consult-ripgrep~ to start with
 a symbol, word, or active region near point automatically filled in.
+
+The package, inspired by the ~isearch-forward-thing-at-point~ command
+defined in ~isearch.el~.
 
 ** Features
 - Seed Consult commands with thing-at-point as INITIAL input
@@ -15,8 +14,8 @@ a symbol, word, or active region near point automatically filled in.
 - Optional per-command overrides
 - Preserves the original Consult command interface and interactive behavior
 
-* Installation
-** Manual installation
+** Installation
+*** Manual installation
 1. Put ~consult-things-at-point.el~ somewhere in your load-path
 2. Add the following to your init file
 
@@ -24,8 +23,8 @@ a symbol, word, or active region near point automatically filled in.
 (require 'consult-things-at-point)
 #+end_src
 
-* Usage
-** Commands
+** Usage
+*** Commands
 - ~consult-line-thing-at-point~
   Run ~consult-line~ with the thing at point used as INITIAL input.
 
@@ -39,15 +38,19 @@ a symbol, word, or active region near point automatically filled in.
   The DIR argument follows the original ~consult-ripgrep~ convention and
   receives the raw prefix argument (~interactive "P"~).
 
-** Example key bindings
+- The commands follows are the almost same as ~consult-ripgrep-thing-at-point~
+  - ~consult-find-thing-at-point~
+  - ~consult-grep-thing-at-point~
+  - ~consult-git-grep-thing-at-point~
+
+*** Example key bindings
+
 #+begin_src emacs-lisp
-(global-set-key (kbd "M-s l") #'consult-line-thing-at-point)
-(global-set-key (kbd "M-s M-l") #'consult-line-multi-thing-at-point)
-(global-set-key (kbd "M-s r") #'consult-ripgrep-thing-at-point)
+  (keymap-global-set "C-c i" #'consult-line-multi-thing-at-point)
 #+end_src
 
-* Customization
-** Default thing types
+** Customization
+*** Default thing types
 ~consult-things-at-point-types~ defines the default list of thing types tried
 at point, in priority order.
 
@@ -58,7 +61,7 @@ at point, in priority order.
 - Each element must be accepted by ~bounds-of-thing-at-point~
 - The first matching thing is used as INITIAL input
 
-** Per-command overrides (optional)
+*** Per-command overrides (optional)
 Different Consult commands may benefit from different priorities.  This can
 be configured via ~consult-things-at-point-types-alist~.
 
@@ -69,21 +72,21 @@ be configured via ~consult-things-at-point-types-alist~.
         (consult-ripgrep . (symbol word))))
 #+end_src
 
-* How it works
+** How it works
 - Try each configured thing type using ~bounds-of-thing-at-point~
 - Extract the corresponding buffer substring
 - Pass it as INITIAL input to the Consult command
 - If no thing is found, run the original Consult command unchanged
 
-* Notes
+** Notes
 - This package assumes that the Consult command accepts INITIAL as its last
   argument (as is the case for ~consult-line~, ~consult-line-multi~,
   ~consult-ripgrep~, etc.).
 - Arguments obtained via ~interactive "P"~ are passed through unchanged for
   compatibility with the original Consult commands.
 
-* Development
-** Adding new wrapper commands
+** Development
+*** Adding new wrapper commands
 - Preserve the original interactive behavior of the Consult command
 - Pass all original arguments through unchanged
 - Append INITIAL input as the last argument
